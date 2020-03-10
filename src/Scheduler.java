@@ -42,6 +42,8 @@ public class Scheduler implements Runnable {
 		startTime = System.currentTimeMillis();  //Re-initialize start time
 		while (!isCompleted())
 		{
+			
+			//if (start)
 			if (!waitingProcesses.isEmpty())
 			{
 				for (int i = 0 ; i <waitingProcesses.size(); i++)

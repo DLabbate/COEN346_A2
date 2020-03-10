@@ -4,7 +4,7 @@ public class Process implements Runnable {
 	
 	public static int nextID = 1;
 	int ID;
-	long quantumTime = 1000;
+	double quantumTime = 1000;
 	
 	private double arrivalTime;
 	private double serviceTime; 
@@ -64,6 +64,7 @@ public class Process implements Runnable {
 					if (hasCpu)
 					{
 						System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " Resumed -" + " Remaining Time: " + remainingTime);
+						updateQuantumTime();
 						decrementTime();
 						System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " Paused -" + " Remaining Time: " + remainingTime);
 					}
@@ -168,4 +169,9 @@ public class Process implements Runnable {
 		this.isFinished = isFinished;
 	}
 	
+	public void updateQuantumTime()
+	{ 
+		double scale = 0.10;
+		this.quantumTime = scale * remainingTime;
+	}
 }
