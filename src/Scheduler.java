@@ -107,6 +107,29 @@ public class Scheduler implements Runnable {
 	}
 	
 	
+	/*
+	 * This process is responsible for finding a process with
+	 * the MINIMUM remaining execution time
+	 * 
+	 * Note the function returns the INDEX, not the actual process itself
+	 */
+	public int findNextProcess()
+	{
+		int minimum_index = 0; //Index of the process with minimum remaining time 
+		for (int i=0; i <readyProcesses.size(); i++)
+		{
+			double temp = readyProcesses.get(i).getRemainingTime();
+			if (readyProcesses.get(minimum_index).getRemainingTime() > temp)
+			{
+				minimum_index = i;
+			}
+			
+		}
+		
+		return minimum_index;
+	}
+	
+	
 	
 	
 	

@@ -39,7 +39,10 @@ public class Driver {
 		
 		scheduler.setWaitingProcesses(waitingList);
 		scheduler.setReadyProcesses(readyList);
-		scheduler.run();
+		System.out.println(scheduler.findNextProcess());
+		//scheduler.run();
+		Thread schedulerThread = new Thread(scheduler);
+		schedulerThread.start();
 		//t1.suspend();
 		//long x = System.currentTimeMillis();
 		//while()
