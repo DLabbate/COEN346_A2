@@ -51,7 +51,11 @@ public class Scheduler implements Runnable {
 					Process currentProcess = waitingProcesses.get(i); 
 					if (currentProcess.getArrivalTime() < Scheduler.getElapsedtime())
 					{
-						currentProcess.setHasCpu(true);
+						/*
+						 * If a process is ready, do we add it to the ready queue AND run it,
+						 * or simply add it to the ready queue
+						 */
+						//currentProcess.setHasCpu(true);
 						Thread thread = new Thread(currentProcess);
 						threads.add(thread);
 						thread.start();
@@ -74,7 +78,8 @@ public class Scheduler implements Runnable {
 			{
 				for (int i=0; i < readyProcesses.size(); i++)
 				{
-					Process currentProcess = readyProcesses.get(i);
+					int nextIndex = findNextProcess();
+					Process currentProcess = readyProcesses.get(nextIndex);
 					currentProcess.setHasCpu(true);
 					
 					//threads.get(i).resume();
@@ -83,14 +88,16 @@ public class Scheduler implements Runnable {
 					
 					if (currentProcess.isFinished())
 					{
-						readyProcesses.remove(i);
-						threads.remove(i);
+						System.out.println("Process #" + readyProcesses.get(nextIndex).ID + " BEING REMOVED FROM READY QUEUE");
+						readyProcesses.remove(nextIndex);
+						threads.remove(nextIndex);
 					}
 					
 				}
 			}
 			
 		}
+		System.out.println("*********SCHEDULER FINISHED********");
 	}
 		
 	
@@ -116,10 +123,10 @@ public class Scheduler implements Runnable {
 	public int findNextProcess()
 	{
 		int minimum_index = 0; //Index of the process with minimum remaining time 
-		for (int i=0; i <readyProcesses.size(); i++)
+		for (int i=0; i < readyProcesses.size(); i++)
 		{
 			double temp = readyProcesses.get(i).getRemainingTime();
-			if (readyProcesses.get(minimum_index).getRemainingTime() > temp)
+			if (readyProcesses.get(minimum_index).getRemainingTime() >= temp)
 			{
 				minimum_index = i;
 			}

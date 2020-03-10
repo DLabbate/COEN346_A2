@@ -106,7 +106,7 @@ public class Process implements Runnable {
 		
 		remainingTime -= quantumTime;
 		
-		if (remainingTime < 0.01)
+		if (remainingTime < 0.1)
 		{
 			finish();
 		}
@@ -162,7 +162,17 @@ public class Process implements Runnable {
 	}
 
 	public boolean isFinished() {
-		return isFinished;
+		//return isFinished;
+		if (remainingTime <= 0.1)
+		{
+			this.isFinished = true;
+			return true;
+		}
+		else 
+		{
+			this.isFinished = false;
+			return false;
+		}
 	}
 
 	public void setFinished(boolean isFinished) {
