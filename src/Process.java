@@ -39,18 +39,6 @@ public class Process implements Runnable {
 		{
 			System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " Started - calling run() ");
 			
-			/*
-			//while ( (System.currentTimeMillis() - enterTime) < quantumTime)
-			{
-				if (!isFinished)
-				{
-					if (hasCpu)
-					{
-						decrementTime();	
-					}
-				}
-			}
-			*/
 			
 			while (!isFinished)
 			{
