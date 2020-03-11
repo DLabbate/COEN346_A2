@@ -4,7 +4,7 @@ public class Process implements Runnable {
 	
 	public static int nextID = 1;
 	int ID;
-	long quantumTime = 1000;
+	double quantumTime = 1000;
 	
 	private double arrivalTime;
 	private double serviceTime; 
@@ -39,18 +39,6 @@ public class Process implements Runnable {
 		{
 			System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " Started - calling run() ");
 			
-			/*
-			//while ( (System.currentTimeMillis() - enterTime) < quantumTime)
-			{
-				if (!isFinished)
-				{
-					if (hasCpu)
-					{
-						decrementTime();	
-					}
-				}
-			}
-			*/
 			
 			while (!isFinished)
 			{
@@ -64,6 +52,7 @@ public class Process implements Runnable {
 					if (hasCpu)
 					{
 						System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " Resumed -" + " Remaining Time: " + remainingTime);
+						updateQuantumTime();
 						decrementTime();
 						System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " Paused -" + " Remaining Time: " + remainingTime);
 					}
@@ -105,7 +94,7 @@ public class Process implements Runnable {
 		
 		remainingTime -= quantumTime;
 		
-		if (remainingTime < 0.01)
+		if (remainingTime < 0.1)
 		{
 			finish();
 		}
@@ -161,11 +150,26 @@ public class Process implements Runnable {
 	}
 
 	public boolean isFinished() {
-		return isFinished;
+		//return isFinished;
+		if (remainingTime <= 0.1)
+		{
+			this.isFinished = true;
+			return true;
+		}
+		else 
+		{
+			this.isFinished = false;
+			return false;
+		}
 	}
 
 	public void setFinished(boolean isFinished) {
 		this.isFinished = isFinished;
 	}
 	
+	public void updateQuantumTime()
+	{ 
+		double scale = 0.10;
+		this.quantumTime = scale * remainingTime;
+	}
 }
