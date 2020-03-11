@@ -4,7 +4,7 @@ public class Driver {
 
 	public static void main(String[] args) {
 		
-		
+		/*
 		Process p1 = new Process();
 		p1.setArrivalTime(1000);
 		p1.setRemainingTime(1000);
@@ -20,14 +20,20 @@ public class Driver {
 		Thread t1 = new Thread(p1);
 		Thread t2 = new Thread(p2);
 		Thread t3 = new Thread(p3);
+		*/
+		FileHelper fileHelper = new FileHelper("src/input.txt");
+		fileHelper.FillWaitingProcesses();
+		
 		
 		Scheduler scheduler = new Scheduler();
-		ArrayList<Process> waitingList = new ArrayList<>();
+		ArrayList<Process> waitingList = fileHelper.getwaitingProcesses();
 		ArrayList<Process> readyList = new ArrayList<>();
 		
+		/*
 		waitingList.add(p1);
 		waitingList.add(p2);
-		//waitingList.add(p3);
+		waitingList.add(p3);
+		*/
 		
 	
 		/*
