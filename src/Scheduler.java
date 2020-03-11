@@ -121,7 +121,7 @@ public class Scheduler implements Runnable {
 					 * If a process is ready, do we add it to the ready queue AND run it,
 					 * or simply add it to the ready queue
 					 */
-					//currentProcess.setHasCpu(true);
+					currentProcess.setHasCpu(true);
 					Thread thread = new Thread(currentProcess);
 					threads.add(thread);
 					thread.start();

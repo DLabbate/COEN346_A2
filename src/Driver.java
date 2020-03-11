@@ -7,10 +7,10 @@ public class Driver {
 		
 		Process p1 = new Process();
 		p1.setArrivalTime(1000);
-		p1.setRemainingTime(5000);
+		p1.setRemainingTime(1000);
 		
 		Process p2 = new Process();
-		p2.setArrivalTime(2000);
+		p2.setArrivalTime(20000);
 		p2.setRemainingTime(3000);
 		
 		Process p3 = new Process();
@@ -27,7 +27,7 @@ public class Driver {
 		
 		waitingList.add(p1);
 		waitingList.add(p2);
-		waitingList.add(p3);
+		//waitingList.add(p3);
 		
 	
 		/*
