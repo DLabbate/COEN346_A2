@@ -4,32 +4,43 @@ import java.util.Timer;
 
 public class Scheduler implements Runnable {
 	
-	public static long startTime = System.currentTimeMillis(); //CLOCK
+	public static long startTime = System.currentTimeMillis(); 			//CLOCK
 	
-	private List<Process> waitingProcesses; 
-	private List<Process> readyProcesses; //sort by remaining service time
-	private List<Thread> threads = new ArrayList<Thread>();
+	private List<Process> waitingProcesses; 							//List of processes in waiting queue
+	private List<Process> readyProcesses; 								//List of processes in ready queue
+	private List<Thread> threads = new ArrayList<Thread>();				//These threads are created when a process is ready (based on arrival time)
 	
 	private boolean signalNext = false;
 	
+	/*
+	 * The following function gets the elapsed time
+	 * since the scheduler began
+	 */
 	public static long getElapsedtime() {
 		return System.currentTimeMillis() - startTime;
 	}
 	
+	///////////////////////
+	//GETTERS AND SETTERS//
+	///////////////////////
 	public List<Process> getWaitingProcesses() {
 		return waitingProcesses;
 	}
+	
 	public void setWaitingProcesses(List<Process> waitingProcesses) {
 		this.waitingProcesses = waitingProcesses;
 	}
+	
 	public List<Process> getReadyProcesses() {
 		return readyProcesses;
 	}
+	
 	public void setReadyProcesses(List<Process> readyProcesses) {
 		this.readyProcesses = readyProcesses;
 	}
 
 
+	
 	@Override
 	public void run() {
 		
@@ -62,6 +73,7 @@ public class Scheduler implements Runnable {
 	}
 		
 	
+	//Checks if all processes have been completed
 	private boolean isCompleted()
 	{
 		if (waitingProcesses.isEmpty() && readyProcesses.isEmpty())

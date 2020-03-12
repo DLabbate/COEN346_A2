@@ -29,7 +29,7 @@ public class FileHelper 										//*This class is used to help parse the Input.
 			Process process = new Process();
 			String nextLine = scanner.nextLine();
 			String array[] = new String[2]; 					//Index 0 holds the arrival time, Index 1 holds the remaining time
-			array = nextLine.split("\t");
+			array = nextLine.split("\t");						//Split by a tab
 			
 			double arrivalTime = Double.parseDouble(array[0]);
 			process.setArrivalTime(arrivalTime);

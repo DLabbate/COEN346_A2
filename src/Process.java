@@ -3,14 +3,17 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Process implements Runnable {
 	
 	public static int nextID = 1;
-	int ID;
+	int ID; 						//Process ID
 	double quantumTime = 1000;
 	
-	private double arrivalTime;
-	private double serviceTime; 
+	/*
+	 * Note that times are in milliseconds!
+	 */
+	private double arrivalTime;		//When the process is ready
+	private double serviceTime; 	//How long the process needs to execute
 	private double remainingTime; 	//Initialized to serviceTime
 	private boolean hasCpu; 		//Pause or Resume
-	private boolean isFinished;
+	private boolean isFinished;		//Flag that indicates if the process has finished
 	private double waitingTime;
 	
 	public boolean jobInProgress = false;
@@ -18,7 +21,6 @@ public class Process implements Runnable {
 	
 	public static final ReentrantLock mutex = new ReentrantLock(); //This mutex lock makes sure only one process has the CPU at a given time
 	
-	public static final ReentrantLock mutex_cpu = new ReentrantLock();
 	
 	Process() //Hardcoded values for testing
 	{
@@ -36,7 +38,7 @@ public class Process implements Runnable {
 	public void run() {
 		
 		long enterTime = System.currentTimeMillis(); //Time at which we enter the run() function
-		//mutex_cpu.lock();
+		
 		try
 		{
 			System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " Started - calling run() ");
@@ -44,19 +46,14 @@ public class Process implements Runnable {
 			
 			while (!isFinished)
 			{
-				//System.out.println("Process #" + ID + " Main Loop" + "hasCpu: " + hasCpu);
-				//System.out.println("Process #" + ID + "RUNNING");
-			
 				mutex.lock();
 				jobInProgress = true;
 				try
 				{
 					if (hasCpu)
 					{
-						//update time you 
+						//Update delta time (since process had the CPU)
 						double delta = System.currentTimeMillis() - enterTime;
-						//waitingTime += delta;
-						//update lastEnterTime 
 						incrementWaitingTime(delta);
 						
 						System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " Resumed -" + " Remaining Time: " + remainingTime);
@@ -69,10 +66,8 @@ public class Process implements Runnable {
 				}
 				finally
 				{
-					
-					
 					jobInProgress = false;
-					mutex.unlock();
+					mutex.unlock();			//Release mutex
 				}
 				
 			}
