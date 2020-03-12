@@ -97,7 +97,7 @@ public class Scheduler implements Runnable {
 		for (int i=0; i < readyProcesses.size(); i++)
 		{
 			double temp = readyProcesses.get(i).getRemainingTime();
-			if (readyProcesses.get(minimum_index).getRemainingTime() >= temp)
+			if (readyProcesses.get(minimum_index).getRemainingTime() > temp)
 			{
 				minimum_index = i;
 			}

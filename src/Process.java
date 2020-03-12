@@ -191,4 +191,9 @@ public class Process implements Runnable {
 	{
 		waitingTime += delta;
 	}
+	
+	public double getWaitingTime()
+	{
+		return waitingTime;
+	}
 }
