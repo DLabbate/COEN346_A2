@@ -5,9 +5,6 @@ import java.util.Timer;
 public class Scheduler implements Runnable {
 	
 	public static long startTime = System.currentTimeMillis(); //CLOCK
-	//public static long startTime = 0;
-	
-	//public static final long elapsedTime = 0;
 	
 	private List<Process> waitingProcesses; 
 	private List<Process> readyProcesses; //sort by remaining service time
@@ -17,10 +14,7 @@ public class Scheduler implements Runnable {
 	
 	public static long getElapsedtime() {
 		return System.currentTimeMillis() - startTime;
-		//startTime += 1;
-		//return startTime;
 	}
-	
 	
 	public List<Process> getWaitingProcesses() {
 		return waitingProcesses;
@@ -47,15 +41,11 @@ public class Scheduler implements Runnable {
 			
 			if (!readyProcesses.isEmpty())
 			{
-				//for (int i=0; i < readyProcesses.size(); i++)
 				{
 					int nextIndex = findNextProcess();
 					Process currentProcess = readyProcesses.get(nextIndex);
 					currentProcess.setHasCpu(true);
-					
-					//threads.get(i).resume();
-					//while (currentProcess.getHasCpu()) {System.out.println("Process #" + currentProcess.ID + " waiting 2");} //Busy wait	
-					//threads.get(i).suspend();
+				
 					
 					if (currentProcess.isFinished())
 					{
@@ -109,7 +99,7 @@ public class Scheduler implements Runnable {
 	
 	private void checkWaitingList()
 	{
-		//if (start)
+		
 		if (!waitingProcesses.isEmpty())
 		{
 			for (int i = 0 ; i <waitingProcesses.size(); i++)
@@ -118,15 +108,12 @@ public class Scheduler implements Runnable {
 				if (currentProcess.getArrivalTime() < Scheduler.getElapsedtime())
 				{
 					/*
-					 * If a process is ready, do we add it to the ready queue AND run it,
-					 * or simply add it to the ready queue
+					 * If a process is ready, we add it to the ready queue AND run it
 					 */
 					currentProcess.setHasCpu(true);
 					Thread thread = new Thread(currentProcess);
 					threads.add(thread);
 					thread.start();
-					
-					//while (currentProcess.getHasCpu()) {System.out.println("Process #" + currentProcess.ID + " waiting 1");} //Busy wait	
 					
 					//Now we want to move from the waiting queue to the ready queue
 					waitingProcesses.remove(i);
@@ -139,50 +126,10 @@ public class Scheduler implements Runnable {
 					 */
 					currentProcess.incrementWaitingTime(Scheduler.getElapsedtime()); 
 					
-				
-					//thread.suspend();
-					//System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + currentProcess.ID + " Added to ready queue");
 				}
 			}
 		}
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//public void run()
-	//{
-		
-		
-		/*
-		 * 
-		 * ready queue
-		 * check shortest servicetime from ones that arent finished
-		 * set cpu flag
-		 * resume
-		 * 
-		 * o_assane@encs.concordia.ca
-		 */
-	//}
-	
-	
-
-
 }

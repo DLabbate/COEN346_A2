@@ -8,8 +8,8 @@ public class Process implements Runnable {
 	
 	private double arrivalTime;
 	private double serviceTime; 
-	private double remainingTime; //Initialized to serviceTime
-	private boolean hasCpu; 	//Pause or Resume
+	private double remainingTime; 	//Initialized to serviceTime
+	private boolean hasCpu; 		//Pause or Resume
 	private boolean isFinished;
 	private double waitingTime;
 	
@@ -85,9 +85,7 @@ public class Process implements Runnable {
 		
 		finally
 		{
-			//mutex_cpu.unlock();
 			System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " Exiting run()");
-			//lock.unlock();
 		}
 		
 	}
@@ -96,12 +94,10 @@ public class Process implements Runnable {
 	public synchronized void decrementTime() 
 	{
 		long EnterTime = System.currentTimeMillis();
-		//remainingTime -= quantumTime;
 
 		while ((System.currentTimeMillis() - EnterTime) <= quantumTime)
 		{
-			//System.out.println("Process # " + ID + "Running!");
-			//System.out.println(System.currentTimeMillis());
+			//Running!
 		}
 		
 		//remainingTime -= quantumTime;
@@ -125,7 +121,6 @@ public class Process implements Runnable {
 		isFinished = true;
 		hasCpu = false;
 	}
-	
 	
 	
 	///////////////////////
