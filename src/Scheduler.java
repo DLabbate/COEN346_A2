@@ -4,38 +4,43 @@ import java.util.Timer;
 
 public class Scheduler implements Runnable {
 	
-	public static long startTime = System.currentTimeMillis(); //CLOCK
-	//public static long startTime = 0;
+	public static long startTime = System.currentTimeMillis(); 			//CLOCK
 	
-	//public static final long elapsedTime = 0;
-	
-	private List<Process> waitingProcesses; 
-	private List<Process> readyProcesses; //sort by remaining service time
-	private List<Thread> threads = new ArrayList<Thread>();
+	private List<Process> waitingProcesses; 							//List of processes in waiting queue
+	private List<Process> readyProcesses; 								//List of processes in ready queue
+	private List<Thread> threads = new ArrayList<Thread>();				//These threads are created when a process is ready (based on arrival time)
 	
 	private boolean signalNext = false;
 	
+	/*
+	 * The following function gets the elapsed time
+	 * since the scheduler began
+	 */
 	public static long getElapsedtime() {
 		return System.currentTimeMillis() - startTime;
-		//startTime += 1;
-		//return startTime;
 	}
 	
-	
+	///////////////////////
+	//GETTERS AND SETTERS//
+	///////////////////////
 	public List<Process> getWaitingProcesses() {
 		return waitingProcesses;
 	}
+	
 	public void setWaitingProcesses(List<Process> waitingProcesses) {
 		this.waitingProcesses = waitingProcesses;
 	}
+	
 	public List<Process> getReadyProcesses() {
 		return readyProcesses;
 	}
+	
 	public void setReadyProcesses(List<Process> readyProcesses) {
 		this.readyProcesses = readyProcesses;
 	}
 
 
+	
 	@Override
 	public void run() {
 		
@@ -47,15 +52,11 @@ public class Scheduler implements Runnable {
 			
 			if (!readyProcesses.isEmpty())
 			{
-				//for (int i=0; i < readyProcesses.size(); i++)
 				{
 					int nextIndex = findNextProcess();
 					Process currentProcess = readyProcesses.get(nextIndex);
 					currentProcess.setHasCpu(true);
-					
-					//threads.get(i).resume();
-					//while (currentProcess.getHasCpu()) {System.out.println("Process #" + currentProcess.ID + " waiting 2");} //Busy wait	
-					//threads.get(i).suspend();
+				
 					
 					if (currentProcess.isFinished())
 					{
@@ -72,6 +73,7 @@ public class Scheduler implements Runnable {
 	}
 		
 	
+	//Checks if all processes have been completed
 	private boolean isCompleted()
 	{
 		if (waitingProcesses.isEmpty() && readyProcesses.isEmpty())
@@ -97,7 +99,7 @@ public class Scheduler implements Runnable {
 		for (int i=0; i < readyProcesses.size(); i++)
 		{
 			double temp = readyProcesses.get(i).getRemainingTime();
-			if (readyProcesses.get(minimum_index).getRemainingTime() >= temp)
+			if (readyProcesses.get(minimum_index).getRemainingTime() > temp)
 			{
 				minimum_index = i;
 			}
@@ -109,7 +111,7 @@ public class Scheduler implements Runnable {
 	
 	private void checkWaitingList()
 	{
-		//if (start)
+		
 		if (!waitingProcesses.isEmpty())
 		{
 			for (int i = 0 ; i <waitingProcesses.size(); i++)
@@ -118,64 +120,28 @@ public class Scheduler implements Runnable {
 				if (currentProcess.getArrivalTime() < Scheduler.getElapsedtime())
 				{
 					/*
-					 * If a process is ready, do we add it to the ready queue AND run it,
-					 * or simply add it to the ready queue
+					 * If a process is ready, we add it to the ready queue AND run it
 					 */
 					currentProcess.setHasCpu(true);
 					Thread thread = new Thread(currentProcess);
 					threads.add(thread);
 					thread.start();
 					
-					//while (currentProcess.getHasCpu()) {System.out.println("Process #" + currentProcess.ID + " waiting 1");} //Busy wait	
-					
 					//Now we want to move from the waiting queue to the ready queue
 					waitingProcesses.remove(i);
 					readyProcesses.add(currentProcess);
 					
-				
-					//thread.suspend();
-					//System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + currentProcess.ID + " Added to ready queue");
+					/*
+					 * Here we increment the waiting time
+					 * based on how long it has been waiting to be put in the ready queue
+					 * The waiting time is also incremented when the process does not have the CPU (done SEPARATELY in the Process class)
+					 */
+					currentProcess.incrementWaitingTime(Scheduler.getElapsedtime()); 
+					
 				}
 			}
 		}
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//public void run()
-	//{
-		
-		
-		/*
-		 * 
-		 * ready queue
-		 * check shortest servicetime from ones that arent finished
-		 * set cpu flag
-		 * resume
-		 * 
-		 * o_assane@encs.concordia.ca
-		 */
-	//}
-	
-	
-
-
 }
