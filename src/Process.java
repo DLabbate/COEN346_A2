@@ -53,19 +53,24 @@ public class Process implements Runnable {
 				{
 					if (hasCpu)
 					{
-						//
-						//delta = System.currentTimeMillis() - enterTime
-						//waitingTime += delta
-						//update lastEnterTime ( enterTime = System.currentTimeMillis() )
+						//update time you 
+						double delta = System.currentTimeMillis() - enterTime;
+						//waitingTime += delta;
+						//update lastEnterTime 
+						incrementWaitingTime(delta);
+						
 						System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " Resumed -" + " Remaining Time: " + remainingTime);
 						updateQuantumTime();
 						decrementTime();
 						System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " Paused -" + " Remaining Time: " + remainingTime);
+					
+						enterTime = System.currentTimeMillis();
 					}
 				}
 				finally
 				{
-					//update time you 
+					
+					
 					jobInProgress = false;
 					mutex.unlock();
 				}
@@ -99,7 +104,8 @@ public class Process implements Runnable {
 			//System.out.println(System.currentTimeMillis());
 		}
 		
-		remainingTime -= quantumTime;
+		//remainingTime -= quantumTime;
+		remainingTime -= (System.currentTimeMillis() - EnterTime);
 		
 		if (remainingTime < 0.1)
 		{
