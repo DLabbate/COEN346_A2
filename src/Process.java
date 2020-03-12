@@ -11,6 +11,7 @@ public class Process implements Runnable {
 	private double remainingTime; //Initialized to serviceTime
 	private boolean hasCpu; 	//Pause or Resume
 	private boolean isFinished;
+	private double waitingTime;
 	
 	public boolean jobInProgress = false;
 	
@@ -28,6 +29,7 @@ public class Process implements Runnable {
 		this.remainingTime = this.serviceTime;
 		this.hasCpu = false;
 		this.isFinished = false;
+		this.waitingTime = 0;
 	}
 	
 	@Override
@@ -51,6 +53,10 @@ public class Process implements Runnable {
 				{
 					if (hasCpu)
 					{
+						//
+						//delta = System.currentTimeMillis() - enterTime
+						//waitingTime += delta
+						//update lastEnterTime ( enterTime = System.currentTimeMillis() )
 						System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " Resumed -" + " Remaining Time: " + remainingTime);
 						updateQuantumTime();
 						decrementTime();
@@ -59,6 +65,7 @@ public class Process implements Runnable {
 				}
 				finally
 				{
+					//update time you 
 					jobInProgress = false;
 					mutex.unlock();
 				}
@@ -105,11 +112,12 @@ public class Process implements Runnable {
 
 	private void finish() 
 	{
+		System.out.println("---------------------------------------------------------------------------------");
 		System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID + " *FINISHED*");
+		System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + ID +" Waiting Time: " + waitingTime);
+		System.out.println("---------------------------------------------------------------------------------");
 		isFinished = true;
 		hasCpu = false;
-		
-		
 	}
 	
 	
@@ -171,5 +179,10 @@ public class Process implements Runnable {
 	{ 
 		double scale = 0.10;
 		this.quantumTime = scale * remainingTime;
+	}
+	
+	public void incrementWaitingTime(double delta)
+	{
+		waitingTime += delta;
 	}
 }

@@ -46,7 +46,7 @@ public class Driver {
 		
 		scheduler.setWaitingProcesses(waitingList);
 		scheduler.setReadyProcesses(readyList);
-		System.out.println(scheduler.findNextProcess());
+		//System.out.println(scheduler.findNextProcess());
 		//scheduler.run();
 		Thread schedulerThread = new Thread(scheduler);
 		schedulerThread.start();

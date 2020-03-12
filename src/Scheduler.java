@@ -132,6 +132,13 @@ public class Scheduler implements Runnable {
 					waitingProcesses.remove(i);
 					readyProcesses.add(currentProcess);
 					
+					/*
+					 * Here we increment the waiting time
+					 * based on how long it has been waiting to be put in the ready queue
+					 * The waiting time is also incremented when the process does not have the CPU (done SEPARATELY in the Process class)
+					 */
+					currentProcess.incrementWaitingTime(Scheduler.getElapsedtime()); 
+					
 				
 					//thread.suspend();
 					//System.out.println("(Time, ms: " + Scheduler.getElapsedtime() + ") " + "Process #" + currentProcess.ID + " Added to ready queue");
